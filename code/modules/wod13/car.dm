@@ -171,11 +171,11 @@ SUBSYSTEM_DEF(carpool)
 			repairing = FALSE
 			return
 
-		src.visible_message("<span class='warning'>[user] begins pulling someone out of [src]!</span>", \
+		usr.visible_message("<span class='warning'>[user] begins pulling someone out of [src]!</span>", \
 			"<span class='warning'>You begin pulling [L] out of [src]...</span>")
 		if(do_mob(user, src, 5 SECONDS))
 			var/datum/action/carr/exit_car/C = locate() in L.actions
-			src.visible_message("<span class='warning'>[user] has managed to get [L] out of [src].</span>", \
+			usr.visible_message("<span class='warning'>[user] has managed to get [L] out of [src].</span>", \
 				"<span class='warning'>You've managed to get [L] out of [src].</span>")
 			if(C)
 				C.Trigger()
@@ -240,24 +240,27 @@ SUBSYSTEM_DEF(carpool)
 		return
 	if(istype(I, /obj/item/melee/vampirearms/tire))
 		if(!repairing)
+			if(health >= maxhealth)
+				to_chat(usr, "<span class='notice'>[src] is already fully repaired.</span>")
+				return
 			repairing = TRUE
 
 			var time_to_repair = (maxhealth - health) / 4 //Repair 4hp for every second spent repairing
 			var start_time = world.time
 
-			src.visible_message("<span class='notice'>[user] begins repairing [src]...</span>", \
+			usr.visible_message("<span class='notice'>[user] begins repairing [src]...</span>", \
 				"<span class='notice'>You begin repairing [src]. Stop at any time to only partially repair it.</span>")
 			if(do_mob(user, src, time_to_repair SECONDS))
 				health = maxhealth
 				playsound(src, 'code/modules/wod13/sounds/repair.ogg', 50, TRUE)
-				src.visible_message("<span class='notice'>[user] repairs [src].</span>", \
+				usr.visible_message("<span class='notice'>[user] repairs [src].</span>", \
 					"<span class='notice'>You finish repairing all the dents on [src].</span>")
 				repairing = FALSE
 				return
 			else
 				get_damage((world.time - start_time) * -2 / 5) //partial repair
 				playsound(src, 'code/modules/wod13/sounds/repair.ogg', 50, TRUE)
-				src.visible_message("<span class='notice'>[user] repairs [src].</span>", \
+				usr.visible_message("<span class='notice'>[user] repairs [src].</span>", \
 					"<span class='notice'>You repair some of the dents on [src].</span>")
 				repairing = FALSE
 				return
@@ -320,8 +323,10 @@ SUBSYSTEM_DEF(carpool)
 		. += "<span class='warning'>It appears to be falling apart...</span>"
 	if(locked)
 		. += "<span class='warning'>It's locked.</span>"
-	for(var/mob/living/L in src)
-		. += "<span class='notice'>You see [L] inside.</span>"
+	if(driver || length(passengers))
+		. += "<span class='notice'>\nYou see the following people inside:</span>"
+		for(var/mob/living/L in src)
+			. += "<span class='notice'>* [L]</span>"
 
 /obj/vampire_car/proc/get_damage(var/cost)
 	if(cost > 0)
@@ -465,6 +470,23 @@ SUBSYSTEM_DEF(carpool)
 		if(owner in V.passengers)
 			V.passengers -= owner
 		owner.forceMove(V.loc)
+
+		//randomly move owner out of the car's turf (preferably to the car's side)
+		var/list/exit_side = list()
+		exit_side.Add(SIMPLIFY_DEGREES(V.movement_vector + 90))
+		exit_side.Add(SIMPLIFY_DEGREES(V.movement_vector - 90))
+		for(var/angle in exit_side)
+			if(get_step(owner, angle2dir(angle)).density)
+				exit_side.Remove(angle)
+		var/list/exit_alt = GLOB.cardinals.Copy()
+		for(var/dir in exit_alt)
+			if(get_step(owner, dir).density)
+				exit_alt.Remove(dir)
+		if(length(exit_side))
+			owner.Move(get_step(owner, angle2dir(pick(exit_side))))
+		else if(length(exit_alt))
+			owner.Move(get_step(owner, pick(exit_alt)))
+
 		to_chat(owner, "<span class='notice'>You exit [V].</span>")
 		if(owner)
 			if(owner.client)
@@ -483,11 +505,11 @@ SUBSYSTEM_DEF(carpool)
 			to_chat(src, "<span class='warning'>[V] is locked.</span>")
 			return
 
-		if(V.driver & length(V.passengers) >= V.max_passengers)
+		if(V.driver && length(V.passengers) >= V.max_passengers)
 			to_chat(src, "<span class='warning'>There's no space left for you in [V].")
 			return
 
-		src.visible_message("<span class='notice'>[src] begins entering [V]...</span>", \
+		usr.visible_message("<span class='notice'>[src] begins entering [V]...</span>", \
 			"<span class='notice'>You begin entering [V]...</span>")
 		if(do_mob(src, over_object, 1 SECONDS))
 			if(!V.driver)
@@ -510,7 +532,7 @@ SUBSYSTEM_DEF(carpool)
 				V.passengers += src
 				var/datum/action/carr/exit_car/E = new()
 				E.Grant(src)
-			src.visible_message("<span class='notice'>[src] enters [V].</span>", \
+			usr.visible_message("<span class='notice'>[src] enters [V].</span>", \
 				"<span class='notice'>You enter [V].</span>")
 			playsound(V, 'code/modules/wod13/sounds/door.ogg', 50, TRUE)
 			return
@@ -768,6 +790,7 @@ SUBSYSTEM_DEF(carpool)
 /obj/vampire_car/proc/handle_caring()
 	var/used_vector = movement_vector
 	var/used_speed = speed_in_pixels
+
 	if(gas <= 0)
 		on = FALSE
 		set_light(0)
@@ -777,6 +800,12 @@ SUBSYSTEM_DEF(carpool)
 		if(last_vzhzh+10 < world.time)
 			playsound(src, 'code/modules/wod13/sounds/work.ogg', 25, FALSE)
 			last_vzhzh = world.time
+	else
+		speed_in_pixels = (speed_in_pixels < 0 ? -1 : 1) * max(abs(speed_in_pixels) - 15, 0)
+
+	//make NPCs move out of the way
+
+
 	forceMove(locate(last_pos["x"], last_pos["y"], z))
 	pixel_x = last_pos["x_pix"]
 	pixel_y = last_pos["y_pix"]

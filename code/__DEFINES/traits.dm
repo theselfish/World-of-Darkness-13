@@ -271,6 +271,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_UNMASQUERADE		"unmasquerade"	//For tzi clothing
 #define TRAIT_NONMASQUERADE		"nonmasquerade"	//For tzi mods
 
+#define TRAIT_LIGHTWEIGHT		"weight_light" //small animals
+#define TRAIT_HEAVYWEIGHT		"weight_heavy" //ppl with fat bodytype
+#define TRAIT_VERYHEAVYWEIGHT	"weight_veryheavy" //gangrel warforms, werewolves, bears, ppl with fortitude
+
 // You can stare into the abyss, but it does not stare back.
 // You're immune to the hallucination effect of the supermatter, either
 // through force of will, or equipment. Present on /mob or /datum/mind
