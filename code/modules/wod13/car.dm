@@ -853,17 +853,18 @@ SUBSYSTEM_DEF(carpool)
 					//make NPC move out of car's way
 					if(istype(contact, /mob/living/carbon/human/npc))
 						var/mob/living/carbon/human/npc/NPC = contact
-						if(world.time-NPC.last_dodge < 20 \
+						if(world.time-NPC.last_dodge > 20 \
 							&& NPC.stat <= HARD_CRIT \
 							&& !NPC.IsSleeping() \
 							&& !NPC.IsUnconscious() \
 							&& !NPC.IsParalyzed() \
 							&& !NPC.IsStun()
 						)
-							to_chat(driver, "[NPC] cause apparently that is an npc")
 							var/list/dodge_direction = list(
 								SIMPLIFY_DEGREES(movement_vector + 45),
-								SIMPLIFY_DEGREES(movement_vector - 45)
+								SIMPLIFY_DEGREES(movement_vector - 45),
+								SIMPLIFY_DEGREES(movement_vector + 90),
+								SIMPLIFY_DEGREES(movement_vector - 90),
 							)
 							for(var/angle in dodge_direction)
 								if(get_step(NPC, angle2dir(angle)).density)
@@ -881,12 +882,12 @@ SUBSYSTEM_DEF(carpool)
 				if(dist_to_hit <= used_speed)
 					var/list/stuff = T.unpassable.Copy()
 					stuff -= src
+					for(var/contact in stuff)
+						if(istype(contact, /mob/living/carbon/human/npc))
+							var/mob/living/carbon/human/npc/NPC = contact
+							if(NPC.IsKnockdown())
+								stuff -= contact
 					if(length(stuff))
-						for(var/contact in stuff)
-							if(istype(contact, /mob/living/carbon/human/npc))
-								var/mob/living/carbon/human/npc/NPC = contact
-								if(NPC.IsKnockdown())
-									stuff -= contact
 						if(!hit_turf || dist_to_hit < get_dist_in_pixels(last_pos["x"]*32+last_pos["x_pix"], last_pos["y"]*32+last_pos["y_pix"], hit_turf.x*32, hit_turf.y*32))
 							hit_turf = T
 		if(hit_turf)
