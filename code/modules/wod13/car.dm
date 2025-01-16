@@ -854,7 +854,7 @@ SUBSYSTEM_DEF(carpool)
 					if(istype(contact, /mob/living/carbon/human/npc))
 						var/mob/living/carbon/human/npc/NPC = contact
 						if(world.time-NPC.last_dodge > 20 \
-							&& NPC.stat <= HARD_CRIT \
+							&& NPC.stat <= UNCONSCIOUS \
 							&& !NPC.IsSleeping() \
 							&& !NPC.IsUnconscious() \
 							&& !NPC.IsParalyzed() \
@@ -872,7 +872,8 @@ SUBSYSTEM_DEF(carpool)
 							if(length(dodge_direction))
 								step(NPC, angle2dir(pick(dodge_direction)), NPC.total_multiplicative_slowdown())
 								NPC.last_dodge = world.time
-								NPC.RealisticSay(pick(NPC.socialrole.car_dodged))
+								if(prob(50))
+									NPC.RealisticSay(pick(NPC.socialrole.car_dodged))
 
 		var/turf/hit_turf
 		var/list/in_line = get_line(src, check_turf)
@@ -951,7 +952,7 @@ SUBSYSTEM_DEF(carpool)
 		return
 	if(istype(mob, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = mob
-		if(H.stat >= HARD_CRIT)
+		if(H.stat >= UNCONSCIOUS)
 			return
 		if(H.IsSleeping())
 			return
