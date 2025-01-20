@@ -171,11 +171,11 @@ SUBSYSTEM_DEF(carpool)
 			repairing = FALSE
 			return
 
-		usr.visible_message("<span class='warning'>[user] begins pulling someone out of [src]!</span>", \
+		user.visible_message("<span class='warning'>[user] begins pulling someone out of [src]!</span>", \
 			"<span class='warning'>You begin pulling [L] out of [src]...</span>")
 		if(do_mob(user, src, 5 SECONDS))
 			var/datum/action/carr/exit_car/C = locate() in L.actions
-			usr.visible_message("<span class='warning'>[user] has managed to get [L] out of [src].</span>", \
+			user.visible_message("<span class='warning'>[user] has managed to get [L] out of [src].</span>", \
 				"<span class='warning'>You've managed to get [L] out of [src].</span>")
 			if(C)
 				C.Trigger()
@@ -241,19 +241,19 @@ SUBSYSTEM_DEF(carpool)
 	if(istype(I, /obj/item/melee/vampirearms/tire))
 		if(!repairing)
 			if(health >= maxhealth)
-				to_chat(usr, "<span class='notice'>[src] is already fully repaired.</span>")
+				to_chat(user, "<span class='notice'>[src] is already fully repaired.</span>")
 				return
 			repairing = TRUE
 
 			var time_to_repair = (maxhealth - health) / 4 //Repair 4hp for every second spent repairing
 			var start_time = world.time
 
-			usr.visible_message("<span class='notice'>[user] begins repairing [src]...</span>", \
+			user.visible_message("<span class='notice'>[user] begins repairing [src]...</span>", \
 				"<span class='notice'>You begin repairing [src]. Stop at any time to only partially repair it.</span>")
 			if(do_mob(user, src, time_to_repair SECONDS))
 				health = maxhealth
 				playsound(src, 'code/modules/wod13/sounds/repair.ogg', 50, TRUE)
-				usr.visible_message("<span class='notice'>[user] repairs [src].</span>", \
+				user.visible_message("<span class='notice'>[user] repairs [src].</span>", \
 					"<span class='notice'>You finish repairing all the dents on [src].</span>")
 				color = "#ffffff"
 				repairing = FALSE
@@ -261,7 +261,7 @@ SUBSYSTEM_DEF(carpool)
 			else
 				get_damage((world.time - start_time) * -2 / 5) //partial repair
 				playsound(src, 'code/modules/wod13/sounds/repair.ogg', 50, TRUE)
-				usr.visible_message("<span class='notice'>[user] repairs [src].</span>", \
+				user.visible_message("<span class='notice'>[user] repairs [src].</span>", \
 					"<span class='notice'>You repair some of the dents on [src].</span>")
 				color = "#ffffff"
 				repairing = FALSE
@@ -551,23 +551,24 @@ SUBSYSTEM_DEF(carpool)
 
 	if(istype(A, /mob/living))
 		var/mob/living/hit_mob = A
-		if(hit_mob.mob_size == MOB_SIZE_HUGE) 	//gangrel warforms, werewolves, bears, ppl with fortitude
-			playsound(src, 'code/modules/wod13/sounds/bump.ogg', 75, TRUE)
-			speed_in_pixels = 0
-			impact_delay = world.time
-			hit_mob.Paralyze(10)
-		if(hit_mob.mob_size == MOB_SIZE_LARGE)	//ppl with fat bodytype
-			playsound(src, 'code/modules/wod13/sounds/bump.ogg', 60, TRUE)
-			speed_in_pixels = round(speed_in_pixels * 0.35)
-			hit_mob.Knockdown(10)
-		if(hit_mob.mob_size == MOB_SIZE_SMALL)	//small animals
-			playsound(src, 'code/modules/wod13/sounds/bump.ogg', 40, TRUE)
-			speed_in_pixels = round(speed_in_pixels * 0.75)
-			hit_mob.Knockdown(10)
-		else									//everything else
-			playsound(src, 'code/modules/wod13/sounds/bump.ogg', 50, TRUE)
-			speed_in_pixels = round(speed_in_pixels * 0.5)
-			hit_mob.Knockdown(10)
+		switch(hit_mob.mob_size)
+			if(MOB_SIZE_HUGE) 	//gangrel warforms, werewolves, bears, ppl with fortitude
+				playsound(src, 'code/modules/wod13/sounds/bump.ogg', 75, TRUE)
+				speed_in_pixels = 0
+				impact_delay = world.time
+				hit_mob.Paralyze(1 SECONDS)
+			if(MOB_SIZE_LARGE)	//ppl with fat bodytype
+				playsound(src, 'code/modules/wod13/sounds/bump.ogg', 60, TRUE)
+				speed_in_pixels = round(speed_in_pixels * 0.35)
+				hit_mob.Knockdown(1 SECONDS)
+			if(MOB_SIZE_SMALL)	//small animals
+				playsound(src, 'code/modules/wod13/sounds/bump.ogg', 40, TRUE)
+				speed_in_pixels = round(speed_in_pixels * 0.75)
+				hit_mob.Knockdown(1 SECONDS)
+			else				//everything else
+				playsound(src, 'code/modules/wod13/sounds/bump.ogg', 50, TRUE)
+				speed_in_pixels = round(speed_in_pixels * 0.5)
+				hit_mob.Knockdown(1 SECONDS)
 	else
 		playsound(src, 'code/modules/wod13/sounds/bump.ogg', 75, TRUE)
 		speed_in_pixels = 0
@@ -853,7 +854,7 @@ SUBSYSTEM_DEF(carpool)
 					//make NPC move out of car's way
 					if(istype(contact, /mob/living/carbon/human/npc))
 						var/mob/living/carbon/human/npc/NPC = contact
-						if(world.time-NPC.last_dodge > 20 \
+						if(COOLDOWN_FINISHED(NPC, car_dodge) \
 							&& NPC.stat <= UNCONSCIOUS \
 							&& !NPC.IsSleeping() \
 							&& !NPC.IsUnconscious() \
@@ -871,7 +872,7 @@ SUBSYSTEM_DEF(carpool)
 									dodge_direction.Remove(angle)
 							if(length(dodge_direction))
 								step(NPC, angle2dir(pick(dodge_direction)), NPC.total_multiplicative_slowdown())
-								NPC.last_dodge = world.time
+								COOLDOWN_START(NPC, car_dodge, 2 SECONDS)
 								if(prob(50))
 									NPC.RealisticSay(pick(NPC.socialrole.car_dodged))
 
@@ -919,12 +920,12 @@ SUBSYSTEM_DEF(carpool)
 	if(length(south_turf.unpassable))
 		moved_y = max(-8-last_pos["y_pix"], moved_y)
 
-	for(var/mob/living/L in src)
-		if(L)
-			if(L.client)
-				L.client.pixel_x = last_pos["x_frwd"]
-				L.client.pixel_y = last_pos["y_frwd"]
-				animate(L.client, \
+	for(var/mob/living/rider in src)
+		if(rider)
+			if(rider.client)
+				rider.client.pixel_x = last_pos["x_frwd"]
+				rider.client.pixel_y = last_pos["y_frwd"]
+				animate(rider.client, \
 					pixel_x = last_pos["x_pix"] + moved_x * 2, \
 					pixel_y = last_pos["y_pix"] + moved_y * 2, \
 					SScarpool.wait, 1)
@@ -966,7 +967,7 @@ SUBSYSTEM_DEF(carpool)
 			return
 		if(HAS_TRAIT(H, TRAIT_RESTRAINED))
 			return
-	var turn_speed = min(abs(speed_in_pixels) / 10, 3)
+	var/turn_speed = min(abs(speed_in_pixels) / 10, 3)
 	switch(direct)
 		if(NORTH)
 			controlling(1, 0)

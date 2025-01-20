@@ -5,7 +5,7 @@
 
 	var/is_talking = FALSE
 	var/last_annoy = 0
-	var/last_dodge = 0
+	COOLDOWN_DECLARE(car_dodge)
 	var/hostile = FALSE
 	var/fights_anyway = FALSE
 	var/last_danger_meet = 0
