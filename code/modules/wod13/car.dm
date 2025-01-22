@@ -327,8 +327,8 @@ SUBSYSTEM_DEF(carpool)
 		. += "<span class='warning'>It's locked.</span>"
 	if(driver || length(passengers))
 		. += "<span class='notice'>\nYou see the following people inside:</span>"
-		for(var/mob/living/L in src)
-			. += "<span class='notice'>* [L]</span>"
+		for(var/mob/living/rider in src)
+			. += "<span class='notice'>* [rider]</span>"
 
 /obj/vampire_car/proc/get_damage(var/cost)
 	if(cost > 0)
@@ -511,7 +511,7 @@ SUBSYSTEM_DEF(carpool)
 			to_chat(src, "<span class='warning'>There's no space left for you in [V].")
 			return
 
-		usr.visible_message("<span class='notice'>[src] begins entering [V]...</span>", \
+		visible_message("<span class='notice'>[src] begins entering [V]...</span>", \
 			"<span class='notice'>You begin entering [V]...</span>")
 		if(do_mob(src, over_object, 1 SECONDS))
 			if(!V.driver)
@@ -534,7 +534,7 @@ SUBSYSTEM_DEF(carpool)
 				V.passengers += src
 				var/datum/action/carr/exit_car/E = new()
 				E.Grant(src)
-			usr.visible_message("<span class='notice'>[src] enters [V].</span>", \
+			visible_message("<span class='notice'>[src] enters [V].</span>", \
 				"<span class='notice'>You enter [V].</span>")
 			playsound(V, 'code/modules/wod13/sounds/door.ogg', 50, TRUE)
 			return
@@ -854,13 +854,7 @@ SUBSYSTEM_DEF(carpool)
 					//make NPC move out of car's way
 					if(istype(contact, /mob/living/carbon/human/npc))
 						var/mob/living/carbon/human/npc/NPC = contact
-						if(COOLDOWN_FINISHED(NPC, car_dodge) \
-							&& NPC.stat <= UNCONSCIOUS \
-							&& !NPC.IsSleeping() \
-							&& !NPC.IsUnconscious() \
-							&& !NPC.IsParalyzed() \
-							&& !NPC.IsStun()
-						)
+						if(COOLDOWN_FINISHED(NPC, car_dodge) && !HAS_TRAIT(NPC, TRAIT_INCAPACITATED))
 							var/list/dodge_direction = list(
 								SIMPLIFY_DEGREES(movement_vector + 45),
 								SIMPLIFY_DEGREES(movement_vector - 45),
@@ -953,19 +947,10 @@ SUBSYSTEM_DEF(carpool)
 		return
 	if(istype(mob, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = mob
-		if(H.stat >= UNCONSCIOUS)
-			return
-		if(H.IsSleeping())
-			return
-		if(H.IsUnconscious())
-			return
-		if(H.IsParalyzed())
-			return
-		if(H.IsKnockdown())
-			return
-		if(H.IsStun())
-			return
-		if(HAS_TRAIT(H, TRAIT_RESTRAINED))
+		if(H.stat >= UNCONSCIOUS \
+			|| HAS_TRAIT(H, TRAIT_INCAPACITATED) \
+			|| HAS_TRAIT(H, TRAIT_RESTRAINED)
+		)
 			return
 	var/turn_speed = min(abs(speed_in_pixels) / 10, 3)
 	switch(direct)
