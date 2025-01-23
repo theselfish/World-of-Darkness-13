@@ -946,7 +946,7 @@ SUBSYSTEM_DEF(carpool)
 	if(world.time-impact_delay < 20)
 		return
 	if(driver.IsUnconscious() || HAS_TRAIT(driver, TRAIT_INCAPACITATED) || HAS_TRAIT(driver, TRAIT_RESTRAINED))
-			return
+		return
 	var/turn_speed = min(abs(speed_in_pixels) / 10, 3)
 	switch(direct)
 		if(NORTH)
