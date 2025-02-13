@@ -60,10 +60,10 @@ GLOBAL_LIST_EMPTY(auspices_list)
 		GLOB.surgeries_list += new path()
 	sortList(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
-	// Hair Gradients - Initialise all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name
-	for(var/path in subtypesof(/datum/sprite_accessory/hair_gradient))
-		var/datum/sprite_accessory/hair_gradient/H = new path()
-		GLOB.hair_gradients_list[H.name] = H
+	// Hair Gradients - Initialise all /datum/sprite_accessory/gradient into an list indexed by gradient-style name
+	for(var/path in subtypesof(/datum/sprite_accessory/gradient))
+		var/datum/sprite_accessory/gradient/H = new path()
+		GLOB.gradients_list[H.name] = H
 
 	// Keybindings
 	init_keybindings()
