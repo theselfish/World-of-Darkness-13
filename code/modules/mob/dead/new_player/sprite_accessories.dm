@@ -1363,6 +1363,83 @@
 	name = "Zoey"
 	icon_state = "hair_zoey"
 
+
+/*
+/////////////////////////////////////
+/  =---------------------------=    /
+/  == Gradient Hair Definitions ==  /
+/  =---------------------------=    /
+/////////////////////////////////////
+*/
+
+/datum/sprite_accessory/hair_gradient
+	icon = 'icons/mob/hair_gradients.dmi'
+
+/datum/sprite_accessory/gradient/none
+	name = "None"
+	icon_state = "none"
+
+/datum/sprite_accessory/gradient/full
+	name = "Full"
+	icon_state = "full"
+
+/datum/sprite_accessory/gradient/fadeup
+	name = "Fade Up"
+	icon_state = "fadeup"
+
+/datum/sprite_accessory/gradient/fadedown
+	name = "Fade Down"
+	icon_state = "fadedown"
+
+/datum/sprite_accessory/gradient/vertical_split
+	name = "Vertical Split"
+	icon_state = "vsplit"
+
+/datum/sprite_accessory/gradient/horizontal_split
+	name = "Horizontal Split"
+	icon_state = "bottomflat"
+
+/datum/sprite_accessory/gradient/reflected
+	name = "Reflected"
+	icon_state = "reflected_high"
+
+/datum/sprite_accessory/gradient/reflected_inverse
+	name = "Reflected Inverse"
+	icon_state = "reflected_inverse_high"
+
+/datum/sprite_accessory/gradient/wavy
+	name = "Wavy"
+	icon_state = "wavy"
+
+/datum/sprite_accessory/gradient/long_fade_up
+	name = "Long Fade Up"
+	icon_state = "long_fade_up"
+
+/datum/sprite_accessory/gradient/long_fade_down
+	name = "Long Fade Down"
+	icon_state = "long_fade_down"
+
+/datum/sprite_accessory/gradient/short_fade_up
+	name = "Short Fade Up"
+	icon_state = "short_fade_up"
+
+/datum/sprite_accessory/gradient/short_fade_down
+	name = "Short Fade Down"
+	icon_state = "short_fade_down_beard"
+
+/datum/sprite_accessory/gradient/wavy_spike
+	name = "Spiked Wavy"
+	icon_state = "wavy_spiked"
+
+/datum/sprite_accessory/gradient/striped
+	name = "Striped"
+	icon_state = "striped"
+
+/datum/sprite_accessory/gradient/striped_vertical
+	name = "Striped Vertical"
+	icon_state = "striped_vertical"
+
+
 /////////////////////////////
 // Facial Hair Definitions //
 /////////////////////////////
@@ -1547,7 +1624,7 @@
 	name = "Men's Striped Boxer"
 	icon_state = "male_stripe"
 	gender = MALE
-/*
+
 /datum/sprite_accessory/underwear/male_midway
 	name = "Men's Midway Boxer"
 	icon_state = "male_midway"
@@ -1557,7 +1634,7 @@
 	name = "Men's Long Johns"
 	icon_state = "male_longjohns"
 	gender = MALE
-*/
+
 /datum/sprite_accessory/underwear/male_kinky
 	name = "Men's Kinky"
 	icon_state = "male_kinky"
@@ -1573,7 +1650,7 @@
 	icon_state = "male_hearts"
 	gender = MALE
 	use_static = TRUE
-/*
+
 /datum/sprite_accessory/underwear/male_commie
 	name = "Men's Striped Commie Boxer"
 	icon_state = "male_commie"
@@ -1591,7 +1668,7 @@
 	icon_state = "male_uk"
 	gender = MALE
 	use_static = TRUE
-*/
+
 
 //FEMALE UNDERWEAR
 /datum/sprite_accessory/underwear/female_bikini
@@ -1633,7 +1710,7 @@
 	name = "Ladies' One Piece Swimsuit"
 	icon_state = "swim_onepiece"
 	gender = FEMALE
-/*
+
 /datum/sprite_accessory/underwear/swimsuit_strapless_onepiece
 	name = "Ladies' Strapless One Piece Swimsuit"
 	icon_state = "swim_strapless_onepiece"
@@ -1688,7 +1765,7 @@
 	icon_state = "female_uk"
 	gender = FEMALE
 	use_static = TRUE
-*/
+
 /datum/sprite_accessory/underwear/female_kinky
 	name = "Ladies' Kinky"
 	icon_state = "female_kinky"
@@ -1708,7 +1785,7 @@
 	gender = NEUTER
 
 // please make sure they're sorted alphabetically and categorized
-/*
+
 /datum/sprite_accessory/undershirt/bluejersey
 	name = "Jersey (Blue)"
 	icon_state = "shirt_bluejersey"
@@ -1718,7 +1795,7 @@
 	name = "Jersey (Red)"
 	icon_state = "shirt_redjersey"
 	gender = NEUTER
-*/
+
 /datum/sprite_accessory/undershirt/bluepolo
 	name = "Polo Shirt (Blue)"
 	icon_state = "bluepolo"
@@ -1753,17 +1830,17 @@
 	name = "Shirt (Black)"
 	icon_state = "shirt_black"
 	gender = NEUTER
-/*
+
 /datum/sprite_accessory/undershirt/blueshirt
 	name = "Shirt (Blue)"
 	icon_state = "shirt_blue"
 	gender = NEUTER
-
+/*
 /datum/sprite_accessory/undershirt/clownshirt
 	name = "Shirt (Clown)"
 	icon_state = "shirt_clown"
 	gender = NEUTER
-
+*/
 /datum/sprite_accessory/undershirt/commie
 	name = "Shirt (Commie)"
 	icon_state = "shirt_commie"
@@ -1773,7 +1850,7 @@
 	name = "Shirt (Green)"
 	icon_state = "shirt_green"
 	gender = NEUTER
-*/
+
 /datum/sprite_accessory/undershirt/shirt_grey
 	name = "Shirt (Grey)"
 	icon_state = "shirt_grey"
@@ -1798,7 +1875,7 @@
 	name = "Shirt (Matroska)"
 	icon_state = "matroska"
 	gender = NEUTER
-/*
+
 /datum/sprite_accessory/undershirt/meat
 	name = "Shirt (Meat)"
 	icon_state = "shirt_meat"
@@ -1818,7 +1895,7 @@
 	name = "Shirt (Pogoman)"
 	icon_state = "pogoman"
 	gender = NEUTER
-*/
+
 /datum/sprite_accessory/undershirt/question
 	name = "Shirt (Question)"
 	icon_state = "shirt_question"
@@ -1833,7 +1910,7 @@
 	name = "Shirt (Skull)"
 	icon_state = "shirt_skull"
 	gender = NEUTER
-/*
+
 /datum/sprite_accessory/undershirt/ss13
 	name = "Shirt (SS13)"
 	icon_state = "shirt_ss13"
@@ -1858,12 +1935,12 @@
 	name = "Shirt (USA)"
 	icon_state = "shirt_assblastusa"
 	gender = NEUTER
-*/
+
 /datum/sprite_accessory/undershirt/shirt_white
 	name = "Shirt (White)"
 	icon_state = "shirt_white"
 	gender = NEUTER
-/*
+
 /datum/sprite_accessory/undershirt/blackshortsleeve
 	name = "Short-sleeved Shirt (Black)"
 	icon_state = "blackshortsleeve"
@@ -1913,7 +1990,7 @@
 	name = "Sports Shirt (Red)"
 	icon_state = "redshirtsport"
 	gender = NEUTER
-*/
+
 /datum/sprite_accessory/undershirt/tank_black
 	name = "Tank Top (Black)"
 	icon_state = "tank_black"
@@ -1928,12 +2005,12 @@
 	name = "Tank Top (Grey)"
 	icon_state = "tank_grey"
 	gender = NEUTER
-/*
+
 /datum/sprite_accessory/undershirt/female_midriff
 	name = "Tank Top (Midriff)"
 	icon_state = "tank_midriff"
 	gender = FEMALE
-*/
+
 /datum/sprite_accessory/undershirt/tank_red
 	name = "Tank Top (Red)"
 	icon_state = "tank_red"
@@ -1948,7 +2025,7 @@
 	name = "Tank Top (White)"
 	icon_state = "tank_white"
 	gender = NEUTER
-/*
+
 /datum/sprite_accessory/undershirt/redtop
 	name = "Top (Red)"
 	icon_state = "redtop"
@@ -1978,7 +2055,7 @@
 	name = "T-Shirt (Yellow)"
 	icon_state = "yellowshirt"
 	gender = NEUTER
-*/
+
 ///////////////////////
 // Socks Definitions //
 ///////////////////////
@@ -1995,7 +2072,7 @@
 /datum/sprite_accessory/socks/black_knee
 	name = "Knee-high (Black)"
 	icon_state = "black_knee"
-/*
+
 /datum/sprite_accessory/socks/commie_knee
 	name = "Knee-High (Commie)"
 	icon_state = "commie_knee"
@@ -2011,23 +2088,23 @@
 /datum/sprite_accessory/socks/striped_knee
 	name = "Knee-high (Striped)"
 	icon_state = "striped_knee"
-*/
+
 /datum/sprite_accessory/socks/thin_knee
 	name = "Knee-high (Thin)"
 	icon_state = "thin_knee"
-/*
+
 /datum/sprite_accessory/socks/uk_knee
 	name = "Knee-High (UK)"
 	icon_state = "uk_knee"
-*/
+
 /datum/sprite_accessory/socks/white_knee
 	name = "Knee-high (White)"
 	icon_state = "white_knee"
-/*
+
 /datum/sprite_accessory/socks/bee_knee
 	name = "Knee-high (Bee)"
 	icon_state = "bee_knee"
-*/
+
 /datum/sprite_accessory/socks/black_norm
 	name = "Normal (Black)"
 	icon_state = "black_norm"
@@ -2039,7 +2116,7 @@
 /datum/sprite_accessory/socks/pantyhose
 	name = "Pantyhose"
 	icon_state = "pantyhose"
-/*
+
 /datum/sprite_accessory/socks/black_short
 	name = "Short (Black)"
 	icon_state = "black_short"
@@ -2079,11 +2156,11 @@
 /datum/sprite_accessory/socks/stockings_yellow
 	name = "Stockings (Yellow)"
 	icon_state = "stockings_yellow"
-*/
+
 /datum/sprite_accessory/socks/black_thigh
 	name = "Thigh-high (Black)"
 	icon_state = "black_thigh"
-/*
+
 /datum/sprite_accessory/socks/commie_thigh
 	name = "Thigh-high (Commie)"
 	icon_state = "commie_thigh"
@@ -2099,19 +2176,19 @@
 /datum/sprite_accessory/socks/striped_thigh
 	name = "Thigh-high (Striped)"
 	icon_state = "striped_thigh"
-*/
+
 /datum/sprite_accessory/socks/thin_thigh
 	name = "Thigh-high (Thin)"
 	icon_state = "thin_thigh"
-/*
+
 /datum/sprite_accessory/socks/uk_thigh
 	name = "Thigh-high (UK)"
 	icon_state = "uk_thigh"
-*/
+
 /datum/sprite_accessory/socks/white_thigh
 	name = "Thigh-high (White)"
 	icon_state = "white_thigh"
-/*
+
 /datum/sprite_accessory/socks/bee_thigh
 	name = "Thigh-high (Bee)"
 	icon_state = "bee_thigh"
@@ -2119,7 +2196,7 @@
 /datum/sprite_accessory/socks/thocks
 	name = "Thocks"
 	icon_state = "thocks"
-*/
+
 //////////.//////////////////
 // MutantParts Definitions //
 /////////////////////////////
