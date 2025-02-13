@@ -1372,7 +1372,7 @@
 /////////////////////////////////////
 */
 
-/datum/sprite_accessory/hair_gradient
+/datum/sprite_accessory/gradient
 	icon = 'icons/mob/hair_gradients.dmi'
 
 /datum/sprite_accessory/gradient/none
