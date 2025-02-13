@@ -20,8 +20,6 @@
  */
 
 /obj/item/dyespray/proc/dye(mob/target)
-	if(!ishuman(target))
-		return
 	var/mob/living/carbon/human/human_target = target
 
 	var/new_grad_style = input(usr, "Choose a color pattern:", "Character Preference")  as null|anything in GLOB.hair_gradients_list
