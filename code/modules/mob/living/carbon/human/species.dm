@@ -33,9 +33,9 @@ GLOBAL_LIST_EMPTY(selectable_races)
 	var/hair_alpha = 255
 
 	///The gradient style used for the mob's hair.
-	var/grad_style
+	grad_style
 	///The gradient color used to color the gradient.
-	var/grad_color
+	grad_color
 
 	///Does the species use skintones or not? As of now only used by humans.
 	var/use_skintones = FALSE
