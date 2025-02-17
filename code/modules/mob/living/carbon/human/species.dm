@@ -32,6 +32,11 @@ GLOBAL_LIST_EMPTY(selectable_races)
 	///The alpha used by the hair. 255 is completely solid, 0 is invisible.
 	var/hair_alpha = 255
 
+	///The gradient style used for the mob's hair.
+	var/grad_style
+	///The gradient color used to color the gradient.
+	var/grad_color
+
 	///Does the species use skintones or not? As of now only used by humans.
 	var/use_skintones = FALSE
 	///If your race bleeds something other than bog standard blood, change this to reagent id. For example, ethereals bleed liquid electricity.
