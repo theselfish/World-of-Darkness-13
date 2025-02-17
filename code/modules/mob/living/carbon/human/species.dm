@@ -32,7 +32,7 @@ GLOBAL_LIST_EMPTY(selectable_races)
 	///The alpha used by the hair. 255 is completely solid, 0 is invisible.
 	var/hair_alpha = 255
 
-///The gradient style used for the mob's hair.
+	///The gradient style used for the mob's hair.
 	var/grad_style
 	///The gradient color used to color the gradient.
 	var/grad_color
@@ -621,7 +621,7 @@ GLOBAL_LIST_EMPTY(selectable_races)
 							hair_overlay.color = "#" + hair_color
 					else
 						hair_overlay.color = "#" + H.hair_color
-//Gradients
+	//Gradients
 					grad_style = H.grad_style
 					grad_color = H.grad_color
 					if(grad_style)
