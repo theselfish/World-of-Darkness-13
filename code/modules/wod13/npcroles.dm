@@ -1177,7 +1177,7 @@
 	. = ..()
 	if(prob(66))
 		base_body_mod = "f"
-	AssignSocialRole(/datum/socialrole/police, /datum/socialrole/police/female,)
+	AssignSocialRole(pick(/datum/socialrole/police, /datum/socialrole/police/female,))
 
 /mob/living/carbon/human/npc/police/Life()
 	. = ..()
